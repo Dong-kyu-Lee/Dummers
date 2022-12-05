@@ -6,8 +6,12 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] float speed;
     [SerializeField] float runSpeed;
+    Rigidbody2D rigid;
+    SpriteRenderer sr;
+    Animator anim;
     float currentSpeed = 0;
     float maxDistance = 15.0f;
+    Vector3 prePosition;
     Vector2 mousePos;
 
     void Start()
@@ -17,11 +21,18 @@ public class PlayerController : MonoBehaviour
         GameManager.Input.keyAction += Move;
         GameManager.Input.mouseAction -= OnMouseClicked;
         GameManager.Input.mouseAction += OnMouseClicked;
+        rigid = GetComponent<Rigidbody2D>();
+        sr = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
+        prePosition = transform.position;
     }
 
     void Update()
     {
-
+        //Idle - Move Animation
+        if (transform.position != prePosition) anim.SetBool("isMove", true);
+        else anim.SetBool("isMove", false);
+        prePosition = transform.position;
     }
 
     void Move()
@@ -29,9 +40,17 @@ public class PlayerController : MonoBehaviour
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");
 
+        if (h > 0) sr.flipX = true;
+        else if (h < 0) sr.flipX = false;
+
         if (Input.GetKey(KeyCode.LeftShift)) currentSpeed = runSpeed;
         else currentSpeed = speed;
         transform.position += new Vector3(h, v, 0).normalized * currentSpeed * Time.deltaTime;
+
+        /*if (transform.position != prePosition) anim.SetBool("isMove", true);
+        else anim.SetBool("isMove", false); 
+        움직일 때만 Move 실행, 아니면 실행 안되서 "움직이지 않을 때 Idle로 바꾸기"가 이 함수 안에서는 안됨.
+        prePosition = transform.position;*/
     }
 
     void OnMouseClicked(Define.MouseEvent evt)
