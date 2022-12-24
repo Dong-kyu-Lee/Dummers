@@ -6,7 +6,6 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] float speed;
     [SerializeField] float runSpeed;
-    Rigidbody2D rigid;
     SpriteRenderer sr;
     Animator anim;
     float currentSpeed = 0;
@@ -14,16 +13,18 @@ public class PlayerController : MonoBehaviour
     Vector3 prePosition;
     Vector2 mousePos;
 
-    void Start()
+    PlayerState player;
+
+    void Awake()
     {
         // InputManager에 keyAction이 실행되면 Move를 실행.
         GameManager.Input.keyAction -= Move;
         GameManager.Input.keyAction += Move;
         GameManager.Input.mouseAction -= OnMouseClicked;
         GameManager.Input.mouseAction += OnMouseClicked;
-        rigid = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        player = GetComponent<PlayerState>();
         prePosition = transform.position;
     }
 
@@ -63,7 +64,8 @@ public class PlayerController : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector3.forward, maxDistance);
         if(hit)
         {
-            hit.transform.GetComponent<SpriteRenderer>().color = Color.red;
+            Debug.Log("Shoot");
+            //player.currentWaepon.Attack();
         }
     }
 }

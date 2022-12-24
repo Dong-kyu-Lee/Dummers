@@ -8,4 +8,9 @@ public class Define
     {
         Press, Click
     }
+
+    public enum WeaponType
+    {
+        Shoot, Smash
+    }
 }
