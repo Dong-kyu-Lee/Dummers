@@ -1,26 +1,51 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerInteraction : MonoBehaviour
 {
-    // Start is called before the first frame update
+    bool isInteractable;
+    bool isTalking;
+    Dialog[] dialogs;
     void Start()
+    {
+        isInteractable = false;
+        isTalking = false;
+        GameManager.Input.keyAction -= InteractWithNPC;
+        GameManager.Input.keyAction += InteractWithNPC;
+    }
+
+    void Update()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    public void InteractWithNPC()
     {
-        
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            if (isInteractable && isTalking == false)
+            {
+                GameManager.UI.OpenDialogue();
+                //GameManager.UI.ChangeDialogText(dialogs);
+                isTalking = true;
+            }
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.CompareTag("NPC"))
         {
-            collision.transform.GetComponent<InteractionEvent>().GetDialogs();
+            Debug.Log("Detected");
+            isInteractable = true;
+            dialogs = collision.transform.GetComponent<InteractionEvent>().GetDialogs();
+            /*for(int i = 0; i < dialogs.Length; ++i)
+            {
+                for (int j = 0; j < dialogs[i].contexts.Length; ++j)
+                    Debug.Log(dialogs[i].contexts[j].Context);
+            }*/
         }
     }
 }

@@ -10,6 +10,8 @@ public class UIManager : MonoBehaviour
     public Vector2 interactionUIPos;
     public Vector2 dialoguePosition;
 
+    Dialog[] dialogs;
+
     void Start()
     {
         dialogueUI = Instantiate(dialogueUI, dialoguePosition, Quaternion.identity, 
@@ -27,19 +29,22 @@ public class UIManager : MonoBehaviour
         Instantiate(interactionUI, interactionUIPos, Quaternion.identity, GameObject.Find("Canvas").transform);
     }
 
-
-
     public void OpenDialogue()
     {
-        dialogueUI.SetActive(true);
+        if (dialogueUI.activeInHierarchy == false)
+        {
+            dialogueUI.SetActive(true);
+        }
     }
     public void CloseDialogue()
     {
         dialogueUI.SetActive(false);
     }
 
-    public void ChangeDialogText(string newText)
+    public void ChangeDialogText()
     {
-        dialogueUI.GetComponent<Text>().text = newText;
+        int dialogSize = dialogs.Length;
+
+        //dialogueUI.GetComponent<Text>().text = newText;
     }
 }

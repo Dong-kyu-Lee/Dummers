@@ -5,11 +5,11 @@ using UnityEngine;
 public class InteractionEvent : MonoBehaviour
 {
     Dictionary<int, Dialog> dialogDic;
-    [SerializeField] DialogEvent dialogEvent;
+    public DialogEvent dialogEvent;
 
     private void Start()
     {
-        dialogDic = DatabaseManager.dbManager.GetDialogDic(dialogEvent.name);
+        dialogDic = DatabaseManager.dbManager.GetDialogDic(dialogEvent.fileName);
     }
 
     public Dialog[] GetDialogs()
@@ -24,8 +24,6 @@ public class InteractionEvent : MonoBehaviour
         }
 
         return dialogList.ToArray();
-        //dialogEvent.dialogs = DatabaseManager.dbManager.GetDialogs((int)dialogEvent.line.x, (int)dialogEvent.line.y);
-        //return dialogEvent.dialogs;
     }
 
     //https://www.youtube.com/watch?v=DPWvoUlHbjg

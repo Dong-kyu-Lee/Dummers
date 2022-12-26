@@ -22,14 +22,20 @@ public class DialogParser : MonoBehaviour
             Dialog dialog = new Dialog(); // 대사 리스트 생성
             
             dialog.name = row[1];
-            
+
             // dialog.contexts는 string[] 이기 때문에
             // 크기가 정해져있지 않으므로 contexts = row[2] 이런 식으로 안됨
-            List<string> contextList = new List<string>();
+            //List<string> contextList = new List<string>();
+            List<Sentence> contextList = new List<Sentence>();
             
             do //다음 문장의 화자 name이 여백이면 아까 말한 화자랑 같으므로 문장 추가
             {
-                contextList.Add(row[2]);
+                int result = 0;
+                bool parsable = int.TryParse(row[3], out result);
+                if (parsable) contextList.Add(new Sentence(row[2], int.Parse(row[3])));
+                else contextList.Add(new Sentence(row[2], -1));
+                /*if (row[3] == "\r") contextList.Add(new Sentence(row[2], "0"));
+                else contextList.Add(new Sentence(row[2], row[3]));*/
                 
                 if (++i < data.Length)
                 {

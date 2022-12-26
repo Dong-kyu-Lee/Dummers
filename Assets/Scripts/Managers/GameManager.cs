@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     UIManager uiManager;
     public static UIManager UI { get { return GetInstance.uiManager; } }
 
-    void Start()
+    void Awake()
     {
         Init();
         uiManager = GetComponent<UIManager>();

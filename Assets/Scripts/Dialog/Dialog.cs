@@ -2,7 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct Sentence { string sentence; int skipPoint; }
+[System.Serializable]
+public struct Sentence
+{
+    private string sentence;
+    public string Context { get => sentence; }
+    private int skipPoint;
+    public int SkipPoint { get => skipPoint; }
+
+    public Sentence(string sen, int point)
+    {
+        sentence = sen;
+        skipPoint = point;
+    }
+}
 
 [System.Serializable]
 public class Dialog
@@ -11,14 +24,5 @@ public class Dialog
     public string name;
 
     [Tooltip("대사 내용")]
-    public string[] contexts;
-}
-
-[System.Serializable]
-public class DialogEvent
-{
-    public string name; // 이벤트명
-
-    public Vector2 line;
-    public Dialog[] dialogs;
+    public Sentence[] contexts;
 }

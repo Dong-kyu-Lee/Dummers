@@ -23,7 +23,6 @@ public class DatabaseManager : MonoBehaviour
     {
         Dictionary<int, Dialog> dialogDic = new Dictionary<int, Dialog>();
         Dialog[] dialogs = parser.Parse(csv_File);
-
         for (int i = 0; i < dialogs.Length; ++i)
         {
             dialogDic.Add(i + 1, dialogs[i]);
