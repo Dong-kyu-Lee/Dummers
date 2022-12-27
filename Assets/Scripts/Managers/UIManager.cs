@@ -6,16 +6,16 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     public GameObject dialogueUI;
+    public Text dialogueText;
     public GameObject interactionUI;
     public Vector2 interactionUIPos;
     public Vector2 dialoguePosition;
 
-    Dialog[] dialogs;
 
     void Start()
     {
-        dialogueUI = Instantiate(dialogueUI, dialoguePosition, Quaternion.identity, 
-            GameObject.Find("Canvas").transform);
+        /*dialogueUI = Instantiate(dialogueUI, dialoguePosition, Quaternion.identity, 
+            GameObject.Find("Canvas").transform);*/
         dialogueUI.SetActive(false);
     }
 
@@ -41,10 +41,8 @@ public class UIManager : MonoBehaviour
         dialogueUI.SetActive(false);
     }
 
-    public void ChangeDialogText()
+    public void ChangeDialogText(string newText)
     {
-        int dialogSize = dialogs.Length;
-
-        //dialogueUI.GetComponent<Text>().text = newText;
+        dialogueText.text = newText;
     }
 }

@@ -7,7 +7,10 @@ public class PlayerInteraction : MonoBehaviour
 {
     bool isInteractable;
     bool isTalking;
-    Dialog[] dialogs;
+    int currentTextIndex = 0;
+    GameObject interactableObj;
+    List<Sentence> textList = new List<Sentence>();
+
     void Start()
     {
         isInteractable = false;
@@ -21,14 +24,43 @@ public class PlayerInteraction : MonoBehaviour
         
     }
 
+    public void OperateDialogList()
+    {
+        Debug.Log(textList.Count);
+        if (textList.Count != 0)
+        {
+            if (currentTextIndex < textList.Count)
+            {
+                GameManager.UI.ChangeDialogText(textList[currentTextIndex].Context);
+                ++currentTextIndex;
+            }
+            else
+            {
+                GameManager.UI.CloseDialogue();
+                currentTextIndex = 0;
+                textList.Clear();
+                isTalking = false;
+            }
+        }
+    }
+
     public void InteractWithNPC()
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
             if (isInteractable && isTalking == false)
             {
+                if (textList.Count != 0) textList.Clear();
+                Dialog[] dialogs = interactableObj.transform.GetComponent<InteractionEvent>().GetDialogs();
+                if (dialogs != null)
+                {
+                    for (int i = 0; i < dialogs.Length; ++i)
+                    {
+                        for (int j = 0; j < dialogs[i].contexts.Length; ++j)
+                            textList.Add(dialogs[i].contexts[j]);
+                    }
+                }
                 GameManager.UI.OpenDialogue();
-                //GameManager.UI.ChangeDialogText(dialogs);
                 isTalking = true;
             }
         }
@@ -40,12 +72,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             Debug.Log("Detected");
             isInteractable = true;
-            dialogs = collision.transform.GetComponent<InteractionEvent>().GetDialogs();
-            /*for(int i = 0; i < dialogs.Length; ++i)
-            {
-                for (int j = 0; j < dialogs[i].contexts.Length; ++j)
-                    Debug.Log(dialogs[i].contexts[j].Context);
-            }*/
+            interactableObj = collision.gameObject;
         }
     }
 }
